@@ -13,7 +13,7 @@ module.exports = async VAPID_PUBLIC_KEY => {
       return jsonSubscription;
     } catch (err) {
       console.error("Received error while getting user subscription", err);
-      throw err;
+      return null;
     }
   } else {
     console.log("No Service Worker detected or no VAPID_PUBLIC_KEY");

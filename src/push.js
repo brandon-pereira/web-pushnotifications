@@ -26,7 +26,6 @@ class Push {
    */
   sendNotification(message, subscription) {
     const pushSubscription = this._parseSubscription(subscription);
-    console.log(message, pushSubscription);
     if (
       pushSubscription &&
       pushSubscription.keys &&
