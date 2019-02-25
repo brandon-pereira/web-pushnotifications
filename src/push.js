@@ -24,24 +24,29 @@ class Push {
    * @param {String} pushSubscription user push subscription
    * @return {Promise}
    */
-  sendNotification(message, subscription) {
+  async sendNotification(message, subscription) {
+    if (!message || !message.title) {
+      throw new Error("Incorrectly formatted message");
+    }
     const pushSubscription = this._parseSubscription(subscription);
     if (
       pushSubscription &&
       pushSubscription.keys &&
       pushSubscription.keys.p256dh &&
-      pushSubscription.keys.auth &&
-      message &&
-      message.title
+      pushSubscription.keys.auth
     ) {
       message.badge = "/notification-badge.png";
       message.icon = "/android-chrome-192x192.png";
-      return webpush.sendNotification(
-        pushSubscription,
-        JSON.stringify(message)
-      );
+      try {
+        await webpush.sendNotification(
+          pushSubscription,
+          JSON.stringify(message)
+        );
+      } catch (err) {
+        throw new Error("Invalid Subscription");
+      }
     } else {
-      throw new Error("Invalid message or pushsubscription");
+      throw new Error("Invalid Subscription");
     }
   }
 
@@ -56,7 +61,7 @@ class Push {
         parsedSubscription.keys.auth
       ).toString();
     } catch (err) {
-      throw new Error("Invalid/Corrupt Push Subscription");
+      throw new Error("Invalid Subscription");
     }
     return parsedSubscription;
   }
