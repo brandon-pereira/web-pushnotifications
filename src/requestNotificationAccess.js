@@ -1,6 +1,5 @@
 module.exports = async VAPID_PUBLIC_KEY => {
   if (navigator.serviceWorker && VAPID_PUBLIC_KEY) {
-    console.log("Requesting notification access!");
     try {
       const reg = await navigator.serviceWorker.ready;
       const subscribeOptions = {
@@ -9,14 +8,13 @@ module.exports = async VAPID_PUBLIC_KEY => {
       };
       const subscription = await reg.pushManager.subscribe(subscribeOptions);
       const jsonSubscription = JSON.stringify(subscription);
-      console.log("Successfully got user subscription", jsonSubscription);
       return jsonSubscription;
     } catch (err) {
       console.error("Received error while getting user subscription", err);
       return null;
     }
   } else {
-    console.log("No Service Worker detected or no VAPID_PUBLIC_KEY");
+    console.error("No Service Worker detected or no VAPID_PUBLIC_KEY");
   }
 };
 
