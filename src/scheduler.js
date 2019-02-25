@@ -1,7 +1,12 @@
 const schedule = require("node-schedule");
 
 class Scheduler {
-  constructor({ scheduleNotification, fetchNotifications, sendNotification }) {
+  constructor({
+    scheduleNotification,
+    fetchNotifications,
+    sendNotification,
+    clearNotification
+  }) {
     if (!scheduleNotification || typeof scheduleNotification !== "function") {
       throw new Error("Error: No scheduleNotification function provided.");
     }
@@ -11,9 +16,13 @@ class Scheduler {
     if (!sendNotification || typeof sendNotification !== "function") {
       throw new Error("Error: No sendNotification function provided.");
     }
+    if (!clearNotification || typeof clearNotification !== "function") {
+      throw new Error("Error: No clearNotifications function provided.");
+    }
     this._scheduleNotification = scheduleNotification;
     this._fetchNotifications = fetchNotifications;
     this._sendNotification = sendNotification;
+    this._clearNotification = clearNotification;
     this.checkAndSendNotifications = this.checkAndSendNotifications.bind(this);
     this.init();
   }
@@ -39,7 +48,10 @@ class Scheduler {
         `${notifications.length} notifications in the queue. Notifying users.`
       );
       await Promise.all(
-        notifications.map(notification => this._sendNotification(notification))
+        notifications.map(async notification => {
+          await this._sendNotification(notification);
+          await this._clearNotification(notification);
+        })
       );
     }
   }

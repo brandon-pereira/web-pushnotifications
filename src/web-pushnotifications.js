@@ -9,6 +9,7 @@ class WebPushNotifications {
     this.scheduler = new Scheduler({
       scheduleNotification: config.scheduleNotification,
       fetchNotifications: config.fetchNotifications,
+      clearNotification: config.clearNotification,
       sendNotification: this.sendNotification.bind(this)
     });
   }
