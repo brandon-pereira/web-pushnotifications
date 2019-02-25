@@ -34,10 +34,6 @@ class Scheduler {
   }
 
   schedule(date, userId, payload) {
-    this.scheduleNotification(date, userId, payload);
-  }
-
-  scheduleNotification(date, userId, payload) {
     return this._scheduleNotification(date, userId, payload);
   }
 
@@ -49,8 +45,12 @@ class Scheduler {
       );
       await Promise.all(
         notifications.map(async notification => {
-          await this._sendNotification(notification);
-          await this._clearNotification(notification);
+          try {
+            await this._sendNotification(notification);
+            await this._clearNotification(notification);
+          } catch (err) {
+            await this._clearNotification(notification);
+          }
         })
       );
     }

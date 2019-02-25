@@ -19,7 +19,7 @@ class WebPushNotifications {
   }
 
   send(userId, payload) {
-    this.scheduler.schedule(new Date(), userId, payload);
+    this.schedule(new Date(), userId, payload);
   }
 
   static generateVAPIDKeys() {
