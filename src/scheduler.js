@@ -19,10 +19,9 @@ class Scheduler {
   }
 
   init() {
-    schedule.scheduleJob({ second: 0 }, this.checkAndSendNotifications);
-    schedule.scheduleJob({ second: 15 }, this.checkAndSendNotifications);
-    schedule.scheduleJob({ second: 30 }, this.checkAndSendNotifications);
-    schedule.scheduleJob({ second: 45 }, this.checkAndSendNotifications);
+    const rule = new schedule.RecurrenceRule();
+    rule.second = [new schedule.Range(0, 59)];
+    schedule.scheduleJob(rule, this.checkAndSendNotifications);
   }
 
   schedule(date, userId, payload) {
