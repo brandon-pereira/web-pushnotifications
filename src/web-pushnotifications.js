@@ -7,9 +7,7 @@ class WebPushNotifications {
     this.push = new Push(this.vapidKeys);
     this.getUserPushSubscription = config.getUserPushSubscription;
     this.scheduler = new Scheduler({
-      scheduleNotification: config.scheduleNotification,
-      fetchNotifications: config.fetchNotifications,
-      clearNotification: config.clearNotification,
+      adapter: config.adapter,
       sendNotification: this.sendNotification.bind(this)
     });
   }
