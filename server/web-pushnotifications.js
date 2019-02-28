@@ -1,10 +1,12 @@
-const Push = require("./push");
-const Scheduler = require("./scheduler");
+const Push = require("./utils/push");
+const Scheduler = require("./utils/scheduler");
 
 class WebPushNotifications {
   constructor(config) {
     this.vapidKeys = config.vapidKeys;
-    this.push = new Push(this.vapidKeys);
+    this.push = new Push(this.vapidKeys, {
+      defaults: config.notificationDefaults || {}
+    });
     this.getUserPushSubscription = config.getUserPushSubscription;
     this.scheduler = new Scheduler({
       adapter: config.adapter,

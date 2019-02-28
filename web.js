@@ -1,4 +1,4 @@
-const RequestNotificationAccess = require("./src/requestNotificationAccess");
+const RequestNotificationAccess = require("./web/requestNotificationAccess");
 module.exports = {
   RequestNotificationAccess
 };

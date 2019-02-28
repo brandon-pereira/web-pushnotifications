@@ -1,10 +1,11 @@
 const webpush = require("web-push");
 
 class Push {
-  constructor({ publicKey, privateKey, email }) {
+  constructor({ publicKey, privateKey, email }, { defaults }) {
     this.publicKey = publicKey;
     this.privateKey = privateKey;
     this.email = email;
+    this.defaults = defaults || {};
     this.init();
   }
 
@@ -35,8 +36,11 @@ class Push {
       pushSubscription.keys.p256dh &&
       pushSubscription.keys.auth
     ) {
-      message.badge = "/notification-badge.png";
-      message.icon = "/android-chrome-192x192.png";
+      message = {
+        ...this.defaults,
+        ...message
+      };
+      console.log(message);
       try {
         await webpush.sendNotification(
           pushSubscription,

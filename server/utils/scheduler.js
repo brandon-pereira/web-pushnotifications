@@ -33,6 +33,10 @@ class Scheduler {
             await this.sendNotification(notification);
             await this.adapter.clearNotification(notification);
           } catch (err) {
+            console.error(
+              "Error sending notification, removing from queue",
+              err
+            );
             await this.adapter.clearNotification(notification);
           }
         })
