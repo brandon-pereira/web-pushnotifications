@@ -1,4 +1,6 @@
-const RequestNotificationAccess = require("./web/requestNotificationAccess");
+const requestNotificationAccess = require("./web/requestAccess");
+const getNotificationSubscription = require("./web/getSubscription");
 module.exports = {
-  RequestNotificationAccess
+  requestNotificationAccess,
+  getNotificationSubscription
 };
