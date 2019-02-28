@@ -3,8 +3,11 @@ module.exports = async () => {
     try {
       const reg = await navigator.serviceWorker.ready;
       const subscription = await reg.pushManager.getSubscription();
-      const jsonSubscription = JSON.stringify(subscription);
-      return jsonSubscription;
+      if (subscription) {
+        const jsonSubscription = JSON.stringify(subscription);
+        return jsonSubscription;
+      }
+      return false;
     } catch (err) {
       console.error("Received error while getting user subscription", err);
       return false;
