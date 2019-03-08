@@ -10,6 +10,7 @@ class WebPushNotifications {
     this.getUserPushSubscription = config.getUserPushSubscription;
     this.scheduler = new Scheduler({
       adapter: config.adapter,
+      removeUserPushSubscription: config.removeUserPushSubscription,
       sendNotification: this.sendNotification.bind(this)
     });
   }
@@ -28,7 +29,15 @@ class WebPushNotifications {
 
   async sendNotification({ userId, payload }) {
     const userSubscription = await this.getUserPushSubscription(userId);
-    await this.push.sendNotification(payload, userSubscription);
+    if (Array.isArray(userSubscription)) {
+      await Promise.all(
+        userSubscription.map(subscription =>
+          this.push.sendNotification(userId, payload, subscription)
+        )
+      );
+    } else {
+      await this.push.sendNotification(userId, payload, userSubscription);
+    }
   }
 }
 module.exports = WebPushNotifications;

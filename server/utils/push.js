@@ -25,7 +25,7 @@ class Push {
    * @param {String} pushSubscription user push subscription
    * @return {Promise}
    */
-  async sendNotification(message, subscription) {
+  async sendNotification(userId, message, subscription) {
     if (!message || !message.title) {
       throw new Error("Incorrectly formatted message");
     }
@@ -40,17 +40,16 @@ class Push {
         ...this.defaults,
         ...message
       };
-      console.log(message);
       try {
         await webpush.sendNotification(
           pushSubscription,
           JSON.stringify(message)
         );
       } catch (err) {
-        throw new Error("Invalid Subscription");
+        throw this._generateInvalidSubscriptionError(userId, pushSubscription);
       }
     } else {
-      throw new Error("Invalid Subscription");
+      throw this._generateInvalidSubscriptionError(userId, pushSubscription);
     }
   }
 
@@ -72,6 +71,14 @@ class Push {
 
   static generateVAPIDKeys() {
     return webpush.generateVAPIDKeys();
+  }
+
+  _generateInvalidSubscriptionError(userId, pushSubscription) {
+    const error = new Error("Invalid User Subscription");
+    error.code = "INVALID_SUBSCRIPTION";
+    error.userId = userId;
+    error.pushSubscription = JSON.stringify(pushSubscription);
+    return error;
   }
 }
 

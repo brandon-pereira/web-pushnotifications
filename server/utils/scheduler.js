@@ -1,12 +1,13 @@
 const schedule = require("node-schedule");
 
 class Scheduler {
-  constructor({ adapter, sendNotification }) {
+  constructor({ adapter, sendNotification, removeUserPushSubscription }) {
     if (!adapter) {
       throw new Error("Error: No adapter provided.");
     }
     this.adapter = adapter;
     this.sendNotification = sendNotification;
+    this.removeUserPushSubscription = removeUserPushSubscription;
     this.checkAndSendNotifications = this.checkAndSendNotifications.bind(this);
     this.init();
   }
@@ -38,6 +39,14 @@ class Scheduler {
               err
             );
             await this.adapter.clearNotification(notification);
+            if (
+              err.code === "INVALID_SUBSCRIPTION" &&
+              err.userId &&
+              err.pushSubscription
+            ) {
+              console.log("Corrupt user subscription, removing...");
+              this.removeUserPushSubscription(err.userId, err.pushSubscription);
+            }
           }
         })
       );
