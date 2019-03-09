@@ -49,7 +49,7 @@ class Push {
         throw this._generateInvalidSubscriptionError(userId, pushSubscription);
       }
     } else {
-      throw this._generateInvalidSubscriptionError(userId, pushSubscription);
+      throw this._generateInvalidSubscriptionError(userId, subscription);
     }
   }
 
@@ -64,7 +64,7 @@ class Push {
         parsedSubscription.keys.auth
       ).toString();
     } catch (err) {
-      throw new Error("Invalid Subscription");
+      return null;
     }
     return parsedSubscription;
   }
@@ -77,7 +77,10 @@ class Push {
     const error = new Error("Invalid User Subscription");
     error.code = "INVALID_SUBSCRIPTION";
     error.userId = userId;
-    error.pushSubscription = JSON.stringify(pushSubscription);
+    error.pushSubscription =
+      typeof pushSubscription === "object"
+        ? JSON.stringify(pushSubscription)
+        : pushSubscription;
     return error;
   }
 }
