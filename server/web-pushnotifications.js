@@ -16,11 +16,15 @@ class WebPushNotifications {
   }
 
   schedule(date, userId, payload) {
-    this.scheduler.schedule(date, userId, payload);
+    return this.scheduler.schedule(date, userId, payload);
   }
 
   send(userId, payload) {
-    this.schedule(new Date(), userId, payload);
+    return this.schedule(new Date(), userId, payload);
+  }
+
+  cancelNotification(id) {
+    return this.scheduler.cancelNotification(id);
   }
 
   static generateVAPIDKeys() {

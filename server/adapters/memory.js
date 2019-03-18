@@ -17,8 +17,8 @@ class InMemory {
     return this.queue.filter(notification => notification.date <= date);
   }
 
-  async clearNotification({ id }) {
-    this.queue = this.queue.filter(noti => noti.id !== id);
+  async clearNotification(id) {
+    this.queue = this.queue.filter(n => n.id !== id);
     return true;
   }
 }

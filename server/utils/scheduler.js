@@ -22,6 +22,10 @@ class Scheduler {
     return this.adapter.scheduleNotification(date, userId, payload);
   }
 
+  cancelNotification(notificationId) {
+    return this.adapter.clearNotification(notificationId);
+  }
+
   async checkAndSendNotifications() {
     const notifications = await this.adapter.fetchNotifications(new Date());
     if (notifications && notifications.length) {

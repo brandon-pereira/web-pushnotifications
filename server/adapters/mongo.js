@@ -25,7 +25,7 @@ class Mongo {
     });
   }
 
-  async clearNotification({ id }) {
+  async clearNotification(id) {
     return await this.collection.deleteOne({ _id: id });
   }
 }
