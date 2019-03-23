@@ -1,5 +1,5 @@
 {
-  "name": "web-pushnotifications",
+  "name": "web-notifier",
   "version": "1.0.0",
   "description": "Easily send push notifications to your users through a service worker!",
   "main": "server.js",

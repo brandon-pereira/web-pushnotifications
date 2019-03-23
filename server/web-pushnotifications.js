@@ -1,7 +1,7 @@
 const Push = require("./utils/push");
 const Scheduler = require("./utils/scheduler");
 
-class WebPushNotifications {
+class WebNotifier {
   constructor(config) {
     this.vapidKeys = config.vapidKeys;
     this.push = new Push(this.vapidKeys, {
@@ -44,4 +44,4 @@ class WebPushNotifications {
     }
   }
 }
-module.exports = WebPushNotifications;
+module.exports = WebNotifier;
